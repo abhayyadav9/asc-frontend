@@ -12,6 +12,8 @@ RUN npm install
 
 # Copy the rest of the application's source code
 COPY . .
+# Debugging step: Print HomePage.tsx content to verify changes are picked up
+RUN cat client/src/pages/HomePage.tsx
 
 # Build the React app for production
 RUN CI=true npm run build
