@@ -3,7 +3,7 @@ import {
   Typography,
   Paper,
   Container,
-  Grid,
+  Box,
   TextField,
   Button,
   Table,
@@ -17,7 +17,6 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Box,
   CircularProgress,
   Alert,
 } from '@mui/material';
@@ -61,8 +60,6 @@ const HomePage: React.FC = () => {
   const [isLoadingInstances, setIsLoadingInstances] = useState(false);
   const [listInstancesError, setListInstancesError] = useState<string | null>(null);
   const [showInstances, setShowInstances] = useState(false);
-  const [filterInstanceYear, setFilterInstanceYear] = useState('');
-  const [filterInstanceSemester, setFilterInstanceSemester] = useState('');
 
   const availableSemesters = ['1', '2', 'Summer', 'Winter'];
 
@@ -265,7 +262,7 @@ const HomePage: React.FC = () => {
     setIsLoadingInstances(true);
     setListInstancesError(null);
     try {
-      const fetchedInstances = await getInstancesApi(filterInstanceYear, filterInstanceSemester);
+      const fetchedInstances = await getInstancesApi();
       setInstances(fetchedInstances);
     } catch (error: unknown) {
       let message = 'Failed to fetch instances.';
@@ -286,8 +283,8 @@ const HomePage: React.FC = () => {
           Create Course
         </Typography>
         {createCourseError && <Alert severity="error" sx={{ mb: 2 }}>{createCourseError}</Alert>}
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={4} component="div">
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', m: -1 }}>
+          <Box sx={{ p: 1, width: '100%', sm: { width: 'calc(100% / 12 * 4)' } }}>
             <TextField
               fullWidth
               label="Course title"
@@ -296,8 +293,8 @@ const HomePage: React.FC = () => {
               variant="outlined"
               disabled={isCreatingCourse}
             />
-          </Grid>
-          <Grid item xs={12} sm={4} component="div">
+          </Box>
+          <Box sx={{ p: 1, width: '100%', sm: { width: 'calc(100% / 12 * 4)' } }}>
             <TextField
               fullWidth
               label="Course code"
@@ -306,8 +303,8 @@ const HomePage: React.FC = () => {
               variant="outlined"
               disabled={isCreatingCourse}
             />
-          </Grid>
-          <Grid item xs={12} sm={4} component="div">
+          </Box>
+          <Box sx={{ p: 1, width: '100%', sm: { width: 'calc(100% / 12 * 4)' } }}>
             <TextField
               fullWidth
               label="Course description"
@@ -316,8 +313,8 @@ const HomePage: React.FC = () => {
               variant="outlined"
               disabled={isCreatingCourse}
             />
-          </Grid>
-          <Grid item xs={12} sm={4} component="div">
+          </Box>
+          <Box sx={{ p: 1, width: '100%', sm: { width: 'calc(100% / 12 * 4)' } }}>
             <TextField
               fullWidth
               label="Credits"
@@ -328,8 +325,8 @@ const HomePage: React.FC = () => {
               disabled={isCreatingCourse}
               inputProps={{ min: 1 }}
             />
-          </Grid>
-          <Grid item xs={12} sm={4} component="div">
+          </Box>
+          <Box sx={{ p: 1, width: '100%', sm: { width: 'calc(100% / 12 * 4)' } }}>
             <TextField
               fullWidth
               label="Department"
@@ -338,18 +335,18 @@ const HomePage: React.FC = () => {
               variant="outlined"
               disabled={isCreatingCourse}
             />
-          </Grid>
-          <Grid item xs={12} sx={{ textAlign: 'left', mt:1 }} component="div">
-            <Button
-                variant="contained"
-                color="primary"
+          </Box>
+          <Box sx={{ p: 1, width: '100%', textAlign: 'left', mt:1 }}>
+            <Button 
+                variant="contained" 
+                color="primary" 
                 onClick={handleAddCourse}
                 disabled={isCreatingCourse || isLoadingCoursesForDropdown}
             >
               {isCreatingCourse ? <CircularProgress size={24} /> : 'Add course'}
             </Button>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Paper>
 
       {/* Section 2: List Courses */}
@@ -413,8 +410,8 @@ const HomePage: React.FC = () => {
           Create Course Instance
         </Typography>
         {createInstanceError && <Alert severity="error" sx={{ mb: 2 }}>{createInstanceError}</Alert>}
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={4} component="div">
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', m: -1 }}>
+          <Box sx={{ p: 1, width: '100%', sm: { width: 'calc(100% / 12 * 4)' } }}>
             <FormControl fullWidth>
               <InputLabel>Course</InputLabel>
               <Select
@@ -430,8 +427,8 @@ const HomePage: React.FC = () => {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={4} component="div">
+          </Box>
+          <Box sx={{ p: 1, width: '100%', sm: { width: 'calc(100% / 12 * 4)' } }}>
             <TextField
               fullWidth
               label="Year"
@@ -440,8 +437,8 @@ const HomePage: React.FC = () => {
               onChange={(e) => setInstanceYear(e.target.value)}
               disabled={isCreatingInstance}
             />
-          </Grid>
-          <Grid item xs={12} sm={4} component="div">
+          </Box>
+          <Box sx={{ p: 1, width: '100%', sm: { width: 'calc(100% / 12 * 4)' } }}>
             <FormControl fullWidth>
               <InputLabel>Semester</InputLabel>
               <Select
@@ -455,8 +452,8 @@ const HomePage: React.FC = () => {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} component="div">
+          </Box>
+          <Box sx={{ p: 1, width: '100%' }}>
             <Button
               variant="contained"
               onClick={handleAddInstance}
@@ -465,8 +462,8 @@ const HomePage: React.FC = () => {
             >
               {isCreatingInstance ? 'Creating...' : 'Create Instance'}
             </Button>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Paper>
 
       {/* Section 4: List Instances */}

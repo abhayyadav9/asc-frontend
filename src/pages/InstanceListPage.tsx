@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'; // Linter fix: type-only import
 import { Link as RouterLink } from 'react-router-dom';
 import {
   TextField, Button, Container, Typography, Paper, Box, List, ListItem, ListItemText, IconButton,
-  CircularProgress, Alert, Select, MenuItem, FormControl, InputLabel, Grid as MuiGrid
+  CircularProgress, Alert, Select, MenuItem, FormControl, InputLabel
 } from '@mui/material';
 import { Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
@@ -101,8 +101,8 @@ const InstanceListPage: React.FC = () => {
         </Box>
 
         <Box component="form" onSubmit={(e: FormEvent<HTMLFormElement>) => { e.preventDefault(); handleFetchInstances(); }} sx={{ mb: 3 }}>
-          <MuiGrid container spacing={2} alignItems="center">
-            <MuiGrid item xs={12} md={4} component="div">
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', m: -1, alignItems: 'center' }}>
+            <Box sx={{ p: 1, width: '100%', md: { width: 'calc(100% / 12 * 4)' } }}>
               <TextField
                 label="Year"
                 type="number" // Keep as number for input UX, converted to string for API if needed by API design
@@ -111,8 +111,8 @@ const InstanceListPage: React.FC = () => {
                 fullWidth
                 required
               />
-            </MuiGrid>
-            <MuiGrid item xs={12} md={4} component="div">
+            </Box>
+            <Box sx={{ p: 1, width: '100%', md: { width: 'calc(100% / 12 * 4)' } }}>
               <FormControl fullWidth required>
                 <InputLabel>Semester</InputLabel>
                 <Select
@@ -125,13 +125,13 @@ const InstanceListPage: React.FC = () => {
                   ))}
                 </Select>
               </FormControl>
-            </MuiGrid>
-            <MuiGrid item xs={12} md={4} sx={{alignSelf: 'center'}} component="div">
+            </Box>
+            <Box sx={{ p: 1, width: '100%', md: { width: 'calc(100% / 12 * 4)' }, alignSelf: 'center' }}>
               <Button type="submit" variant="contained" fullWidth disabled={loading} sx={{height: '56px'}} >
                 {loading ? <CircularProgress size={24} /> : 'Search Instances'}
               </Button>
-            </MuiGrid>
-          </MuiGrid>
+            </Box>
+          </Box>
         </Box>
 
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
