@@ -132,7 +132,7 @@ const HomePage: React.FC = () => {
 
   const handleDeleteCourse = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this course?")) return;
-    
+
     const originalCourses = [...courses];
     setCourses(prev => prev.filter(c => c.id !== id));
     setListCoursesError(null);
@@ -154,7 +154,7 @@ const HomePage: React.FC = () => {
       setCourses(originalCourses);
     }
   };
-  
+
   const handleListCourses = async (triggeredByUser = true) => {
     if (triggeredByUser) setShowCourses(true);
     if (!showCourses && !triggeredByUser) return;
@@ -208,7 +208,7 @@ const HomePage: React.FC = () => {
       console.log('Selected course details:', selectedCourse);
       const response = await createInstanceApi(payload);
       console.log('Instance created successfully:', response);
-      
+
       // Verify course details in response
       if (!response.course_details || !response.course_details.title) {
         console.warn('Created instance is missing course details:', response);
@@ -255,25 +255,19 @@ const HomePage: React.FC = () => {
       else if (typeof error === 'string') message = error;
       setListInstancesError(message);
       setInstances(originalInstances);
-    } 
+    }
   };
 
   const handleListInstances = async (triggeredByUser = true) => {
     if (triggeredByUser) setShowInstances(true);
-    if(!showInstances && !triggeredByUser && !(filterInstanceYear || filterInstanceSemester)) return;
+    if (!showInstances && !triggeredByUser) return;
 
     setIsLoadingInstances(true);
     setListInstancesError(null);
     try {
-      console.log('Fetching instances with filters:', { year: filterInstanceYear, semester: filterInstanceSemester });
-      const fetchedInstances = await getInstancesApi(
-        filterInstanceYear || undefined, 
-        filterInstanceSemester || undefined
-      );
-      console.log('Fetched instances:', fetchedInstances);
+      const fetchedInstances = await getInstancesApi(filterInstanceYear, filterInstanceSemester);
       setInstances(fetchedInstances);
     } catch (error: unknown) {
-      console.error('Failed to fetch instances:', error);
       let message = 'Failed to fetch instances.';
       if (error instanceof Error) message = error.message;
       else if (typeof error === 'string') message = error;
@@ -293,7 +287,7 @@ const HomePage: React.FC = () => {
         </Typography>
         {createCourseError && <Alert severity="error" sx={{ mb: 2 }}>{createCourseError}</Alert>}
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} component="div">
             <TextField
               fullWidth
               label="Course title"
@@ -303,7 +297,7 @@ const HomePage: React.FC = () => {
               disabled={isCreatingCourse}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} component="div">
             <TextField
               fullWidth
               label="Course code"
@@ -313,7 +307,7 @@ const HomePage: React.FC = () => {
               disabled={isCreatingCourse}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} component="div">
             <TextField
               fullWidth
               label="Course description"
@@ -323,7 +317,7 @@ const HomePage: React.FC = () => {
               disabled={isCreatingCourse}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} component="div">
             <TextField
               fullWidth
               label="Credits"
@@ -335,7 +329,7 @@ const HomePage: React.FC = () => {
               inputProps={{ min: 1 }}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} component="div">
             <TextField
               fullWidth
               label="Department"
@@ -345,10 +339,10 @@ const HomePage: React.FC = () => {
               disabled={isCreatingCourse}
             />
           </Grid>
-          <Grid item xs={12} sx={{ textAlign: 'left', mt:1 }}>
-            <Button 
-                variant="contained" 
-                color="primary" 
+          <Grid item xs={12} sx={{ textAlign: 'left', mt:1 }} component="div">
+            <Button
+                variant="contained"
+                color="primary"
                 onClick={handleAddCourse}
                 disabled={isCreatingCourse || isLoadingCoursesForDropdown}
             >
@@ -364,10 +358,10 @@ const HomePage: React.FC = () => {
             <Typography variant="h5" component="h2">
             Course List
             </Typography>
-            <Button 
-                variant="contained" 
-                color="primary" 
-                onClick={() => handleListCourses()} 
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleListCourses()}
                 disabled={isLoadingCourses}
                 sx={{mb:0}}
             >
@@ -420,7 +414,7 @@ const HomePage: React.FC = () => {
         </Typography>
         {createInstanceError && <Alert severity="error" sx={{ mb: 2 }}>{createInstanceError}</Alert>}
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} component="div">
             <FormControl fullWidth>
               <InputLabel>Course</InputLabel>
               <Select
@@ -437,7 +431,7 @@ const HomePage: React.FC = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} component="div">
             <TextField
               fullWidth
               label="Year"
@@ -447,7 +441,7 @@ const HomePage: React.FC = () => {
               disabled={isCreatingInstance}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} component="div">
             <FormControl fullWidth>
               <InputLabel>Semester</InputLabel>
               <Select
@@ -462,7 +456,7 @@ const HomePage: React.FC = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <Button
               variant="contained"
               onClick={handleAddInstance}
@@ -479,102 +473,62 @@ const HomePage: React.FC = () => {
       <Paper elevation={3} sx={{ padding: '2rem' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h5" component="h2">
-            Course Instances
+            Course Instances List
           </Typography>
           <Button
-            variant="outlined"
-            onClick={() => handleListInstances(true)}
-            disabled={isLoadingInstances}
+              variant="contained"
+              color="primary"
+              onClick={() => handleListInstances()}
+              disabled={isLoadingInstances}
+              sx={{mb:0}}
           >
-            {isLoadingInstances ? <CircularProgress size={24} /> : 'Refresh List'}
+              {isLoadingInstances ? <CircularProgress size={24} /> : (showInstances ? 'Refresh Instances' : 'List Instances')}
           </Button>
         </Box>
         {listInstancesError && <Alert severity="error" sx={{ mb: 2 }}>{listInstancesError}</Alert>}
-        
-        {/* Filter controls */}
-        <Grid container spacing={2} sx={{ mb: 2 }}>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              fullWidth
-              label="Filter by Year"
-              type="number"
-              value={filterInstanceYear}
-              onChange={(e) => setFilterInstanceYear(e.target.value)}
-              disabled={isLoadingInstances}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <FormControl fullWidth>
-              <InputLabel>Filter by Semester</InputLabel>
-              <Select
-                value={filterInstanceSemester}
-                label="Filter by Semester"
-                onChange={(e) => setFilterInstanceSemester(e.target.value as string)}
-                disabled={isLoadingInstances}
-              >
-                <MenuItem value="">All</MenuItem>
-                {availableSemesters.map((sem) => (
-                  <MenuItem key={sem} value={sem}>{sem}</MenuItem>
+        {showInstances && !isLoadingInstances && instances.length === 0 && !listInstancesError && (
+            <Typography sx={{my: 2}}>No instances found.</Typography>
+        )}
+        {showInstances && isLoadingInstances && <CircularProgress sx={{ display: 'block', margin: 'auto', my: 2 }} />}
+        {showInstances && !isLoadingInstances && instances.length > 0 && (
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Course</TableCell>
+                  <TableCell>Year</TableCell>
+                  <TableCell>Semester</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {instances.map((instance) => (
+                  <TableRow key={instance.id}>
+                    <TableCell>
+                      {instance.course_details ?
+                        `${instance.course_details.title} (${instance.course_details.course_code})` :
+                        `Course ID: ${instance.course}`}
+                    </TableCell>
+                    <TableCell>{instance.year}</TableCell>
+                    <TableCell>{instance.semester}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        onClick={() => handleDeleteInstance(instance.id!)}
+                        color="error"
+                        title="Delete Instance"
+                      >
+                        <Delete />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => handleListInstances(true)}
-              disabled={isLoadingInstances}
-            >
-              {isLoadingInstances ? <CircularProgress size={24} /> : 'Apply Filters'}
-            </Button>
-          </Grid>
-        </Grid>
-
-        {showInstances && (
-          <>
-            {instances.length === 0 ? (
-              <Typography>No instances found.</Typography>
-            ) : (
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Course</TableCell>
-                      <TableCell>Year</TableCell>
-                      <TableCell>Semester</TableCell>
-                      <TableCell>Actions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {instances.map((instance) => (
-                      <TableRow key={instance.id}>
-                        <TableCell>
-                          {instance.course_details ? 
-                            `${instance.course_details.title} (${instance.course_details.course_code})` : 
-                            `Instance ID: ${instance.id}`}
-                        </TableCell>
-                        <TableCell>{instance.year}</TableCell>
-                        <TableCell>{instance.semester}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            size="small"
-                            onClick={() => handleDeleteInstance(instance.id!)}
-                          >
-                            <Delete />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </>
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
       </Paper>
     </Container>
   );
 };
 
-export default HomePage; 
+export default HomePage;

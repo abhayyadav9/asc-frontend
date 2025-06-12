@@ -69,7 +69,7 @@ const InstanceListPage: React.FC = () => {
       try {
         await deleteInstanceApi(instanceId); // Corrected API call
         // Refetch instances to update the list
-        await handleFetchInstances(); 
+        await handleFetchInstances();
       } catch (err: unknown) {
         let message = 'Failed to delete instance.';
         if (err instanceof Error) {
@@ -90,9 +90,9 @@ const InstanceListPage: React.FC = () => {
             <Typography variant="h5" component="h1">
             Course Instances
             </Typography>
-            <Button 
-                variant="contained" 
-                component={RouterLink} 
+            <Button
+                variant="contained"
+                component={RouterLink}
                 to="/create-instance"
                 startIcon={<AddIcon />}
             >
@@ -102,7 +102,7 @@ const InstanceListPage: React.FC = () => {
 
         <Box component="form" onSubmit={(e: FormEvent<HTMLFormElement>) => { e.preventDefault(); handleFetchInstances(); }} sx={{ mb: 3 }}>
           <MuiGrid container spacing={2} alignItems="center">
-            <MuiGrid item xs={12} md={4}>
+            <MuiGrid item xs={12} md={4} component="div">
               <TextField
                 label="Year"
                 type="number" // Keep as number for input UX, converted to string for API if needed by API design
@@ -112,7 +112,7 @@ const InstanceListPage: React.FC = () => {
                 required
               />
             </MuiGrid>
-            <MuiGrid item xs={12} md={4}>
+            <MuiGrid item xs={12} md={4} component="div">
               <FormControl fullWidth required>
                 <InputLabel>Semester</InputLabel>
                 <Select
@@ -126,7 +126,7 @@ const InstanceListPage: React.FC = () => {
                 </Select>
               </FormControl>
             </MuiGrid>
-            <MuiGrid item xs={12} md={4} sx={{alignSelf: 'center'}}>
+            <MuiGrid item xs={12} md={4} sx={{alignSelf: 'center'}} component="div">
               <Button type="submit" variant="contained" fullWidth disabled={loading} sx={{height: '56px'}} >
                 {loading ? <CircularProgress size={24} /> : 'Search Instances'}
               </Button>
