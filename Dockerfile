@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Build the React app for production
-RUN npm run build
+RUN CI=true npm run build
 
 # Expose the port the app runs on (Vite default is 5173 for dev, but build output is served differently)
 # For serving static files from 'dist', we'll use a simple HTTP server
